@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ObjectNotFoundException } from 'src/exceptions/objectNotFound.exception';
 
 @Controller('category')
 export class CategoryController {
@@ -18,8 +19,13 @@ export class CategoryController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const category = await this.categoryService.findOne(+id);
+
+    if (!category) {
+      return new ObjectNotFoundException('Categoria');
+    }
+    return category;
   }
 
   @Patch(':id')
