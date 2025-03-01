@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ObjectNotFoundException } from 'src/exceptions/objectNotFound.exception';
 
-@Controller('products')
-export class ProductsController {
+@Controller('product')
+export class ProductController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
@@ -13,7 +14,11 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
+   async findAll() {
+    const product = await this.productsService.findAll();
+    if (!product) {
+      return new ObjectNotFoundException('Produto');
+    }
     return this.productsService.findAll();
   }
 

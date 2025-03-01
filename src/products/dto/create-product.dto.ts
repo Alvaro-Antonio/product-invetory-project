@@ -1,6 +1,7 @@
 import { Category } from "src/category/entities/category.entity";
 import { IsString, IsNotEmpty, IsNumber, IsArray, ArrayNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import { GetCategoryDto } from "src/category/dto/get-category.dto";
 
 export class CreateProductDto {
     @IsString()
@@ -16,6 +17,6 @@ export class CreateProductDto {
 
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => Category)
-    categories: Category[];
+    @Type(() => GetCategoryDto)
+    categories: GetCategoryDto[];
 }
