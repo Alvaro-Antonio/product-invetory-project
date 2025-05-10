@@ -8,9 +8,8 @@ import { ProductItemModule } from 'src/product-item/product-item.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductBatch])],
+  imports: [TypeOrmModule.forFeature([ProductBatch]), ProductItemModule],
   controllers: [ProductBatchController],
-  providers: [ProductBatchService, ProductItemService
-  ],
+  providers: [ProductBatchService],
 })
 export class ProductBatchModule {}

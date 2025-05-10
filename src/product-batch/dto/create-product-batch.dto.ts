@@ -6,5 +6,5 @@ export class CreateProductBatchDto {
 
     valueTotal: number;
 
-    productItem: CreateProductItemDto[];
+    productItens : CreateProductItemDto[] = [];
 }

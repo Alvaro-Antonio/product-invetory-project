@@ -1,7 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 import { ProductBatch } from "src/product-batch/entities/product-batch.entity";
 import { Product } from "src/products/entities/product.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ProductItem {
@@ -23,6 +23,8 @@ export class ProductItem {
     @IsNotEmpty()
     @ManyToOne(() => Product, product => product.productItems, { eager: true })
     product : Product;
+
+    @ManyToOne(() => ProductBatch, productBatch => productBatch.productItens)
     productBatch: ProductBatch;
 
 

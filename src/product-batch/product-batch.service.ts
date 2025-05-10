@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm/dist/common/typeorm.decorators
 import { Injectable } from '@nestjs/common/decorators/core/injectable.decorator';
 import { ProductItemService } from 'src/product-item/product-item.service';
 import { ProductItem } from 'src/product-item/entities/product-item.entity';
-import { Inject } from '@nestjs/common/decorators/core/inject.decorator';
+import { CreateProductItemDto } from 'src/product-item/dto/create-product-item.dto';
 
 
 @Injectable()
@@ -15,16 +15,30 @@ export class ProductBatchService {
 
 constructor(
   @InjectRepository(ProductBatch) private batchRepository : Repository<ProductBatch>,
-  @Inject(ProductItemService)
   private readonly productItemService : ProductItemService
 ){}
 
-  create(createProductBatchDto: CreateProductBatchDto) {
-    const productItems : ProductItem [] = this.productItemService.createAll(createProductBatchDto.productItem);
+  async create(createProductBatchDto: CreateProductBatchDto) {
+    
+    createProductBatchDto.dateOrder = new Date();
+    let valueTotal : number = 0.0;
 
-    createProductBatchDto.productItem = productItems;
+    console.log(createProductBatchDto);
+    
+    for (const productItem of createProductBatchDto.productItens) {     
+      valueTotal += productItem.purchasePrice;
+    }
 
-    return this.batchRepository.create(createProductBatchDto);
+  
+    createProductBatchDto.valueTotal = valueTotal;
+    let productbatch : ProductBatch = await this.batchRepository.save(createProductBatchDto);
+
+    for (const productItem of createProductBatchDto.productItens) {     
+      productItem.productBatch = productbatch;
+    }
+    await this.productItemService.createAll(createProductBatchDto.productItens);
+
+    return null;
 
   }
 

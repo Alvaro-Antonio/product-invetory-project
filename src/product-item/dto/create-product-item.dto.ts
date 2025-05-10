@@ -1,3 +1,4 @@
+import { ProductBatch } from "src/product-batch/entities/product-batch.entity";
 import { Product } from "src/products/entities/product.entity";
 
 export class CreateProductItemDto {
@@ -9,5 +10,7 @@ export class CreateProductItemDto {
     sellingPrice: number;
 
     product: Product;
+
+    productBatch: ProductBatch;
     
 }

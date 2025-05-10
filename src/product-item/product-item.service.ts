@@ -4,28 +4,38 @@ import { UpdateProductItemDto } from './dto/update-product-item.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductItem } from './entities/product-item.entity';
 import { Repository } from 'typeorm/repository/Repository';
+import { ProductsService } from 'src/products/products.service';
 
 @Injectable()
 export class ProductItemService {
 
   constructor(
-    @InjectRepository(ProductItem) private reporsitory : Repository<ProductItem>
+    @InjectRepository(ProductItem) private reporsitory : Repository<ProductItem>,
+    private readonly productService: ProductsService
   ){}
 
-  create(createProductItemDto: CreateProductItemDto) {
-    return this.create(createProductItemDto);
+  async create(createProductItemDto: CreateProductItemDto) {
+
+    const product = await this.productService.findOne(createProductItemDto.product.id);
+
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    createProductItemDto.product = product;
+
+    return this.reporsitory.create(createProductItemDto);
   }
 
-  createAll(createProductItemDtos: CreateProductItemDto[]) {
-    return this.createAll(createProductItemDtos)
+  async createAll(createProductItemDtos: CreateProductItemDto[]) {
+    return  await this.reporsitory.save(createProductItemDtos)
   }
 
-  findAll() {
-    return `This action returns all productItem`;
+  async findAll() {
+    return await this.reporsitory.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} productItem`;
+    return this.reporsitory.findOne({where: {id}});
   }
 
   update(id: number, updateProductItemDto: UpdateProductItemDto) {

@@ -14,5 +14,5 @@ export class ProductBatch {
     valueTotal : number;
 
     @OneToMany(() => ProductItem, productItem => productItem.productBatch)
-    productItem : ProductItem [];
+    productItens : ProductItem [];
 }

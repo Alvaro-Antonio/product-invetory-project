@@ -2,12 +2,14 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProductBatchService } from './product-batch.service';
 import { CreateProductBatchDto } from './dto/create-product-batch.dto';
 import { UpdateProductBatchDto } from './dto/update-product-batch.dto';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('product-batch')
 export class ProductBatchController {
   constructor(private readonly productBatchService: ProductBatchService) {}
 
   @Post()
+  @ApiBody({ type: CreateProductBatchDto })
   create(@Body() createProductBatchDto: CreateProductBatchDto) {
     return this.productBatchService.create(createProductBatchDto);
   }
