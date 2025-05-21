@@ -8,6 +8,9 @@ import { Injectable } from '@nestjs/common/decorators/core/injectable.decorator'
 import { ProductItemService } from 'src/product-item/product-item.service';
 import { ProductItem } from 'src/product-item/entities/product-item.entity';
 import { CreateProductItemDto } from 'src/product-item/dto/create-product-item.dto';
+import { Balance } from 'src/finance/balance/entities/balance.entity';
+import { BalanceService } from 'src/finance/balance/balance.service';
+import { ObjectNotFoundException } from 'src/exceptions/objectNotFound.exception';
 
 
 @Injectable()
@@ -15,9 +18,11 @@ export class ProductBatchService {
 
 constructor(
   @InjectRepository(ProductBatch) private batchRepository : Repository<ProductBatch>,
-  private readonly productItemService : ProductItemService
+  private readonly productItemService : ProductItemService,
+  private readonly balanceService : BalanceService,
 ){}
 
+  
   async create(createProductBatchDto: CreateProductBatchDto) {
     
     createProductBatchDto.dateOrder = new Date();
@@ -37,6 +42,15 @@ constructor(
       productItem.productBatch = productbatch;
     }
     await this.productItemService.createAll(createProductBatchDto.productItens);
+
+    const balance: Balance | null = await this.balanceService.findByYear(new Date().getFullYear());
+    if (!balance) {
+      throw new ObjectNotFoundException('Balance not found for the current year');
+    }
+
+    balance.totalInvested += valueTotal;
+    await this.balanceService.update(balance.id, balance);
+
 
     return null;
 

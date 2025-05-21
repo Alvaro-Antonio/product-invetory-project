@@ -2,6 +2,8 @@ import { CreateProductItemDto } from "src/product-item/dto/create-product-item.d
 
 export class CreateProductBatchDto {
     
+    orderNumber : string;
+
     dateOrder: Date;
 
     valueTotal: number;

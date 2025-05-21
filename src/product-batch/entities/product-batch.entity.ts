@@ -7,10 +7,13 @@ export class ProductBatch {
     @PrimaryGeneratedColumn()
     id : number;
 
-    @Column()
+    @Column({nullable: false,default: ''})
+    orderNumber : string;
+
+    @Column({nullable: false})
     dateOrder : Date;
 
-    @Column()
+    @Column({nullable: false})
     valueTotal : number;
 
     @OneToMany(() => ProductItem, productItem => productItem.productBatch)

@@ -1,17 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ObjectNotFoundException } from 'src/exceptions/objectNotFound.exception';
 import { Product } from './entities/product.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { diskStorage } from 'multer';
+import { console } from 'inspector';
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: 'src/configs/database/images/',
+      filename: (_req, file, cb) => {
+        const ext = extname(file.originalname);
+        const filename = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+        console.log("Generated filename:", filename);
+        cb(null, filename);
+      },
+    }),
+  }))
+ async create(@UploadedFile() image: Express.Multer.File, @Body() productRaw: any): Promise<CreateProductDto & Product> {
+      const productDto: CreateProductDto = productRaw;
+      
+      console.log("Image filename:", image?.filename || "No file uploaded");
+      return this.productsService.create(productDto, image.filename);
   }
 
   @Get()

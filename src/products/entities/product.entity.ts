@@ -13,6 +13,9 @@ export class Product {
     @Column()
     description : string;
 
+    @Column({nullable: true})
+    image : string;
+
     @ManyToMany(type => Category, category => category.product, { eager: true })
     @JoinTable()
     categories : Category[] ;

@@ -15,6 +15,8 @@ export class CreateProductDto {
     @IsNumber()
     price: number;
 
+    image : string;
+
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => GetCategoryDto)

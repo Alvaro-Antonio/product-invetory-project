@@ -14,7 +14,9 @@ export class ProductsService {
     private productRepository: Repository<Product>,
     ) {}
 
-  create(createProductDto: CreateProductDto) {
+  create(createProductDto: CreateProductDto, imageFilename: string) {
+    createProductDto.image = `${imageFilename}`;
+
     return this.productRepository.save(createProductDto);
   }
 
