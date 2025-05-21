@@ -58,4 +58,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # SQLite database file
 *.sqlite
 *.sqlite3
-src/configs/database/db.sqlite
+src/configs/database/db.*
+src/configs/database/images/*
