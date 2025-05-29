@@ -7,7 +7,11 @@ import { DataBaseModule } from './configs/database.module';
 import { ProductItemModule } from './product-item/product-item.module';
 import { ProductBatchModule } from './product-batch/product-batch.module';
 import { BalanceModule } from './finance/balance/balance.module';
-import { ImageServiceService } from './utils/image-service/image.service';
+import { ItemSaleModule } from './sale/item-sale/item-sale.module';
+import { SellModule } from './sale/sell/sell.module';
+import { CustomerModule } from './customer/customer.module';
+import { PersonModule } from './person/person.module';
+import { AmountItemProductModule } from './sale/amount-item-product/amount-item-product.module';
 
 @Module({
   imports: [
@@ -15,8 +19,14 @@ import { ImageServiceService } from './utils/image-service/image.service';
     CategoryModule, 
     DataBaseModule, 
     ProductItemModule, 
-    ProductBatchModule, BalanceModule],
+    ProductBatchModule,
+    BalanceModule, 
+    ItemSaleModule,
+    SellModule,
+    CustomerModule,
+    PersonModule,
+    AmountItemProductModule],
   controllers: [AppController],
-  providers: [AppService, ImageServiceService],
+  providers: [AppService,],
 })
 export class AppModule {}
