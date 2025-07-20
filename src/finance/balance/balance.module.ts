@@ -8,6 +8,6 @@ import { Balance } from './entities/balance.entity';
   imports: [TypeOrmModule.forFeature([Balance])],
   controllers: [BalanceController],
   providers: [BalanceService],
-  exports: [BalanceService],
+  exports: [BalanceService, TypeOrmModule.forFeature([Balance])],
 })
 export class BalanceModule {}
