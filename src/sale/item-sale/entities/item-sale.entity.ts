@@ -1,7 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 import { ProductItem } from "src/product-item/entities/product-item.entity";
 import { Sell } from "src/sale/sell/entities/sell.entity";
-import { Entity, ManyToOne, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne } from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn, Column, JoinColumn, OneToOne, OneToMany } from "typeorm";
 
 @Entity()
 export class ItemSale {
@@ -10,7 +10,7 @@ export class ItemSale {
     id: number;
 
     @IsNotEmpty()
-    @OneToOne(() => ProductItem)
+    @OneToMany(() => ProductItem, productItem => productItem.itemSale)
     @JoinColumn()
     productItem: ProductItem; // Assuming productItem is a separate entity
 

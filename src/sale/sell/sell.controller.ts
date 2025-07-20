@@ -8,7 +8,7 @@ export class SellController {
   constructor(private readonly sellService: SellService) {}
 
   @Post()
-  create(@Body() createSellDto: CreateSellDto) {
+  async create(@Body() createSellDto: CreateSellDto) {
     return this.sellService.create(createSellDto);
   }
 

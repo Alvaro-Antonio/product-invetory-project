@@ -2,6 +2,7 @@ import { IsNotEmpty } from "class-validator";
 import { Customer } from "src/customer/entities/customer.entity";
 import { ItemSale } from "src/sale/item-sale/entities/item-sale.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { PaymentMethod } from "../sell.payment.enum";
 
 @Entity()
 export class Sell {
@@ -14,19 +15,26 @@ export class Sell {
     date: Date;
 
     @IsNotEmpty()
+    @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.0 })
     total: number;
 
     @IsNotEmpty()
-    paymentMethod: string;
+    @Column({
+      type: 'enum',
+      enum: PaymentMethod,
+      default: PaymentMethod.CASH,
+    })
+    @JoinColumn({ name: 'paymentMethod' })
+    paymentMethod: PaymentMethod;
 
     @IsNotEmpty()
     @ManyToOne(() => Customer, { eager: true })
     @JoinColumn({ name: 'customerId' })
-    customer: Customer; // Assuming customer is a separate entity
+    customer: Customer; 
 
     //userId: number; // Assuming user is a separate entity
 
     @IsNotEmpty()
     @OneToMany(() => ItemSale, itemSale => itemSale.sell)
-    items: ItemSale[]; // This should be replaced with the actual type of items sold, e.g., ItemSale[]
+    items: ItemSale[]; 
 }

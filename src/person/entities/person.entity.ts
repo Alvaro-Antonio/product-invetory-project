@@ -25,11 +25,10 @@ export class Person {
     address: string;
 
     @IsNotEmpty()
-    @Column()
+    @Column({default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 
-    @IsNotEmpty()
-    @Column()
+    @Column({ nullable: true })
     updatedAt: Date;
 
     @OneToOne(() => Customer, customer => customer.person)

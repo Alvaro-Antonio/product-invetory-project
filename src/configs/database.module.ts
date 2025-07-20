@@ -15,8 +15,14 @@ import { Sell } from "src/sale/sell/entities/sell.entity";
 @Module({
     imports : [
         TypeOrmModule.forRoot({
-            type: 'sqlite',
-            database: 'src/configs/database/db.sqlite',
+            // type: 'sqlite',
+            // database: 'src/configs/database/db.sqlite',
+            type: 'postgres', // Alterado para PostgreSQL
+            host: 'localhost', // Host do banco de dados
+            port: 25433, // Porta padrão do PostgreSQL
+            username: 'postgres', // Usuário do banco de dados
+            password: 'root123', // Senha do banco de dados
+            database: 'product_inventory', // Nome do banco de dados      
             synchronize: true,
             logging: true,
             entities: [

@@ -11,6 +11,8 @@ import { CreateProductItemDto } from 'src/product-item/dto/create-product-item.d
 import { Balance } from 'src/finance/balance/entities/balance.entity';
 import { BalanceService } from 'src/finance/balance/balance.service';
 import { ObjectNotFoundException } from 'src/exceptions/objectNotFound.exception';
+import { CreateAmountItemProductDto } from 'src/sale/amount-item-product/dto/create-amount-item-product.dto';
+import { AmountItemProductService } from 'src/sale/amount-item-product/amount-item-product.service';
 
 
 @Injectable()
@@ -20,6 +22,7 @@ constructor(
   @InjectRepository(ProductBatch) private batchRepository : Repository<ProductBatch>,
   private readonly productItemService : ProductItemService,
   private readonly balanceService : BalanceService,
+  private readonly amountItemProductService : AmountItemProductService
 ){}
 
   
@@ -32,6 +35,13 @@ constructor(
     
     for (const productItem of createProductBatchDto.productItens) {     
       valueTotal += productItem.purchasePrice;
+
+      const amountItemProductDto : CreateAmountItemProductDto = new CreateAmountItemProductDto();
+      amountItemProductDto.amountInitial = productItem.amount;
+      amountItemProductDto.amountFinal = productItem.amount;
+      amountItemProductDto.productItem = productItem;          
+      
+      productItem.amountItemProduct = await this.amountItemProductService.create(amountItemProductDto);
     }
 
   

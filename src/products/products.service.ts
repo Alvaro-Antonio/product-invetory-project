@@ -28,7 +28,7 @@ export class ProductsService {
     return this.productRepository.findOne({where: {id}});
   }
 
-  async findAllByName(name: string) {
+  async findAllByName(name: string) : Promise<Product[]> {
     console.log(name);
     return  await this.productRepository.findBy({ name: ILike(`%${name}%`) });
   } 
