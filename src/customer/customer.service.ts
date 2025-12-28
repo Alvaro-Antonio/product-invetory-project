@@ -55,4 +55,20 @@ export class CustomerService {
     return customers;
   }
 
+async getCustomers(page: number, limit: number): Promise<{ data: Customer[]; totalPages: number; currentPage: number }> {
+  const [data, total] = await this.customerRepository.findAndCount({
+    skip: (page - 1) * limit,
+    take: limit,
+    relations: ['person'],
+  });
+
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    data,
+    totalPages,
+    currentPage: page,
+  };
+}
+
 }

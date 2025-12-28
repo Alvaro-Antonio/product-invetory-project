@@ -33,8 +33,8 @@ constructor(
 
     console.log(createProductBatchDto);
     
-    for (const productItem of createProductBatchDto.productItens) {     
-      valueTotal += productItem.purchasePrice;
+    for (const productItem of createProductBatchDto.productItens) {   
+      valueTotal += productItem.purchasePrice * productItem.amount;
 
       const amountItemProductDto : CreateAmountItemProductDto = new CreateAmountItemProductDto();
       amountItemProductDto.amountInitial = productItem.amount;

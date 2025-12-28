@@ -12,6 +12,13 @@ export class CustomerController {
     return this.customerService.create(createCustomerDto);
   }
 
+@Get('paginated')
+async getPaginatedCustomers(
+  @Query('page') page: number = 1,
+  @Query('limit') limit: number = 15,
+) {
+  return this.customerService.getCustomers(page, limit);
+}
 
   @Get('search')
   findAllByName(@Query('name') name: string) {
